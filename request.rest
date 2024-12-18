@@ -1,0 +1,51 @@
+GET http://localhost:5000/users
+
+###
+GET http://localhost:5000/users/1
+
+###
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "gender": "Male"
+}
+
+###
+PATCH http://localhost:5000/users/1
+Content-Type: application/json
+
+{
+    "name": "M Fikri",
+    "email": "mfikri@gmail.com",
+    "gender": "Male"
+}
+
+###
+DELETE http://localhost:5000/users/2
+
+###
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+    "JENIS_USAHA": "1",
+    "NOMOR_KUSUKA": "2222",
+    "NAMA": "TEST",
+    "NPWP": "2222222",
+    "NO_IZIN": "3333333",
+    "ALAMAT": "ALAMAT SATU",
+    "PROPINSI": "1600",
+    "KOTA": "1607",
+    "KODEPOS": "40000",
+    "TELEPON": "021",
+    "EMAIL": "EMAIL",
+    "EMAIL_PNBP": "EMAIL PNBP",
+    "KETERANGAN": "KETERANGAN",
+    "TGL_DAFTAR": "2022/10/10",
+    "FILE_ID": "ASAL",
+    "STATUS": "PALSU",
+    "LAST_UPDATED": ""
+}
