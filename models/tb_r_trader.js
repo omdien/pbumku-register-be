@@ -84,48 +84,48 @@ const Tb_r_trader = db_hc.define(
     }
   },
   {
-    // Sequelize,
-    // tableName: 'tb_r_trader',
+    Sequelize,
+    tableName: 'tb_r_trader',
     freezeTableName: true,
     timestamps: false,
-    // indexes: [
-    //   {
-    //     name: "PRIMARY",
-    //     unique: true,
-    //     using: "BTREE",
-    //     fields: [
-    //       { name: "KODE_TRADER" },
-    //     ]
-    //   },
-    //   {
-    //     name: "IDX_NM_TRADER",
-    //     using: "BTREE",
-    //     fields: [
-    //       { name: "NAMA" },
-    //     ]
-    //   },
-    //   {
-    //     name: "IDX_NPWP",
-    //     using: "BTREE",
-    //     fields: [
-    //       { name: "NPWP" },
-    //     ]
-    //   },
-    //   {
-    //     name: "FILE_ID",
-    //     using: "BTREE",
-    //     fields: [
-    //       { name: "FILE_ID" },
-    //     ]
-    //   },
-    //   {
-    //     name: "STATUS",
-    //     using: "BTREE",
-    //     fields: [
-    //       { name: "STATUS" },
-    //     ]
-    //   },
-    // ]
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "KODE_TRADER" },
+        ]
+      },
+      {
+        name: "IDX_NM_TRADER",
+        using: "BTREE",
+        fields: [
+          { name: "NAMA" },
+        ]
+      },
+      {
+        name: "IDX_NPWP",
+        using: "BTREE",
+        fields: [
+          { name: "NPWP" },
+        ]
+      },
+      {
+        name: "FILE_ID",
+        using: "BTREE",
+        fields: [
+          { name: "FILE_ID" },
+        ]
+      },
+      {
+        name: "STATUS",
+        using: "BTREE",
+        fields: [
+          { name: "STATUS" },
+        ]
+      },
+    ]
   }
 );
 

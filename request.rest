@@ -1,42 +1,16 @@
-GET http://localhost:5000/users
+GET http://localhost:5001/users
 
 ###
-GET http://localhost:5000/users/1
-
-###
-POST http://localhost:5000/users
+POST http://localhost:5001/register
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "john@gmail.com",
-    "gender": "Male"
-}
-
-###
-PATCH http://localhost:5000/users/1
-Content-Type: application/json
-
-{
-    "name": "M Fikri",
-    "email": "mfikri@gmail.com",
-    "gender": "Male"
-}
-
-###
-DELETE http://localhost:5000/users/2
-
-###
-POST http://localhost:5000/register
-Content-Type: application/json
-
-{
-    "JENIS_USAHA": "1",
-    "NOMOR_KUSUKA": "2222",
-    "NAMA": "TEST",
-    "NPWP": "2222222",
+    "JENIS_USAHA": "3",
+    "NOMOR_KUSUKA": "123457",
+    "NAMA": "PT. PERUSAHAAN MAJU MANDIRI",
+    "NPWP": "123456789012345",
     "NO_IZIN": "3333333",
-    "ALAMAT": "ALAMAT SATU",
+    "ALAMAT": "JL. KELIMUTU NO 53",
     "PROPINSI": "1600",
     "KOTA": "1607",
     "KODEPOS": "40000",
@@ -44,8 +18,36 @@ Content-Type: application/json
     "EMAIL": "EMAIL",
     "EMAIL_PNBP": "EMAIL PNBP",
     "KETERANGAN": "KETERANGAN",
-    "TGL_DAFTAR": "2022/10/10",
+    "TGL_DAFTAR": "2022/10/18",
     "FILE_ID": "ASAL",
-    "STATUS": "PALSU",
-    "LAST_UPDATED": ""
+    "STATUS": "1",
+    "LAST_UPDATED": "2022/10/18"
+}
+
+###
+POST http://localhost:5001/user
+Content-Type: application/json
+
+{
+    "ROLE": "8",
+    "KODE_TRADER": 17503,
+    "USERNAME": "MILAH",
+    "PASSWORD": "cc",
+    "JNS_ID": "1",
+    "NO_ID": "12",
+    "NAMA": "MARKUS",
+    "ALAMAT": "CALIFORNIA",
+    "EMAIL": "kadrun@gmail.com",
+    "TELEPON": "022555213",
+    "JABATAN": "Kuasa Pengguna Angin",
+    "KD_UNIT": "12",
+    "STATUS": "0",
+    "STS_LOGIN": "0",
+    "DATE_LOGIN": "2024/12/12",
+    "IP_LOGIN": "",
+    "LAST_LOGIN": "2024/12/12",
+    "DATE_CREATED": "2024/12/12",
+    "USER_CREATED": 1,
+    "LAST_UPDATED": "2024/12/12",
+    "USER_UPDATED": 1
 }
