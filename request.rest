@@ -11,10 +11,19 @@ GET http://localhost:5001/register/kota
 ###
 
 ###
-GET http://localhost:5001/register/kota/33
+GET http://localhost:5001/register/kota/32
 
 ###
 GET http://localhost:5001/register/upt?page=0&limit=10
+
+###
+GET http://localhost:5001/register/allupt
+
+###
+GET http://localhost:5001/register/uptbyid/
+
+###
+GET http://localhost:5001/register/traders
 
 ###
 POST http://localhost:5001/register/register
@@ -66,4 +75,33 @@ Content-Type: application/json
     "USER_CREATED": 1,
     "LAST_UPDATED": "2024/12/12",
     "USER_UPDATED": 1
+}
+
+###
+# GET http://localhost:5001/register/npwp/01.309.570.8-015.000
+GET http://localhost:5001/register/021.024.415.8-643.000
+
+###
+GET http://localhost:5001/register/username/maman
+
+###
+GET http://localhost:5001/register/user/17551
+
+
+# get layanan
+###
+GET http://localhost:5001/register/layanan/alllayanan
+
+# get by id trader
+###
+GET http://localhost:5001/register/getlayanan/17563
+
+# create layanan
+###
+POST http://localhost:5001/register/crlayanan
+Content-Type: application/json
+
+{
+    "KODE_TRADER": 107,
+    "KODE_LAYANAN": "1"
 }

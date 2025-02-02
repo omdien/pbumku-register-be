@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db_hc from "../config/Database.js";
+import Users from "../models/tb_user.js";
 
 const { DataTypes } = Sequelize;
 
@@ -128,5 +129,10 @@ const Tb_r_trader = db_hc.define(
     ]
   }
 );
+
+Tb_r_trader.hasMany(Users, {foreignKey: 'KODE_TRADER'});
+Users.belongsTo(Tb_r_trader, {foreignKey: 'KODE_TRADER'});
+// Users.hasMany(Products);
+// Products.belongsTo(Users, {foreignKey: 'userId'});
 
 export default Tb_r_trader;
