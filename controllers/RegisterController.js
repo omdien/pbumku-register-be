@@ -5,20 +5,29 @@ import Tb_propinsi from "../models/tb_propinsi.js";
 import Tb_kota from "../models/tb_kota.js";
 import Tb_r_upt from "../models/tb_r_upt.js";
 import Tb_r_layanan from "../models/tb_r_layanan.js";
-import { Op } from "sequelize";
+import Tb_trader_upt from "../models/tb_trader_upt.js";
+import { Op, Sequelize } from "sequelize";
+import fs from "fs";
 // import path from "path";
 // import { Sequelize } from "sequelize";
 
+const randomString = () => {
+  let randomChar =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 10; i++) {
+    result += randomChar.charAt(Math.floor(Math.random() * randomChar.length));
+  }
+  return result;
+};
 // Get All Trader
 export const getTraders = async (req, res) => {
   try {
-    const response = await Tb_r_trader.findAll(
-      {
-        attributes: ["KODE_TRADER", "NAMA", "NPWP", "EMAIL", "TELEPON"],
-        // limit: 100,
-        include: { model: Tb_user, where: { ROLE: 4 } },
-      },
-    );
+    const response = await Tb_r_trader.findAll({
+      attributes: ["KODE_TRADER", "NAMA", "NPWP", "EMAIL", "TELEPON"],
+      // limit: 100,
+      include: { model: Tb_user, where: { ROLE: 4 } },
+    });
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
@@ -27,7 +36,8 @@ export const getTraders = async (req, res) => {
 
 // Save Registrasi/Trader
 export const createRegister = async (req, res) => {
-  if (req.files === null) return res.status(400).json({ msg: "No File Uploaded" });
+  if (req.files === null)
+    return res.status(400).json({ msg: "No File Uploaded" });
   // const name = req.body.title;
   // const file = req.files.FILE_ID;
   // const fileSize = file.data.length;
@@ -74,6 +84,28 @@ export const createRegister = async (req, res) => {
   // );
 };
 
+export const createRegisterWithfile = async (req, res) => {
+  const folderName = randomString();
+  req.body.FILE_ID = folderName;
+  if (req.files === null)
+    return res.status(400).json({ msg: "No File Uploaded" });
+  const folderPath = `./public/images/trader/${folderName}`;
+  const fileSize = file.data.length;
+  const ext = path.extname(file.name);
+  const fileName = file.md5 + ext;
+  const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+  const allowedType = [".png", ".jpg", ".jpeg"];
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+  }
+  try {
+    await Tb_r_trader.create(req.body);
+    res.status(201).json({ msg: "Trader Created" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 // Get Users
 export const getUsers = async (req, res) => {
   try {
@@ -87,13 +119,11 @@ export const getUsers = async (req, res) => {
 // Get Users
 export const getUserName = async (req, res) => {
   try {
-    const response = await Tb_user.findOne(
-      {
-        where: {
-          USERNAME: req.params.username
-        }
-      }
-    );
+    const response = await Tb_user.findOne({
+      where: {
+        USERNAME: req.params.username,
+      },
+    });
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
@@ -123,7 +153,12 @@ export const getMaxTrader = async (req, res) => {
 // Get Propinsi
 export const getPropinsi = async (req, res) => {
   try {
-    const response = await Tb_propinsi.findAll();
+    const response = await Tb_propinsi.findAll({
+      attributes: [
+        [Sequelize.fn("CONCAT", Sequelize.col("KODE_PROPINSI"), "00"), "KODE_PROPINSI"],
+        "URAIAN_PROPINSI",
+      ],
+    });
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
@@ -144,7 +179,7 @@ export const getKotaByIdProp = async (req, res) => {
   try {
     const response = await Tb_kota.findAll({
       where: {
-        KODE_PROPINSI: req.params.id,
+        KODE_PROPINSI:  req.params.id.substring(0, 2),
       },
     });
     res.status(200).json(response);
@@ -237,18 +272,19 @@ export const getUPTById = async (req, res) => {
   }
 };
 
-export const getTraderByNPWP = async (req, res) => {
+export const getTrader = async (req, res) => {
+  console.log('masuk');
   try {
     const response = await Tb_r_trader.findOne({
       where: {
-        NPWP: req.params.npwp
-      }
+        KODE_TRADER: req.params.kdtrader,
+      },
     });
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 export const getUser = async (req, res) => {
   try {
@@ -256,19 +292,19 @@ export const getUser = async (req, res) => {
       where: {
         [Op.and]: [
           {
-            KODE_TRADER: req.params.kdtrader
+            KODE_TRADER: req.params.kdtrader,
           },
           {
-            ROLE: 4
-          }
-        ]
-      }
+            ROLE: 4,
+          },
+        ],
+      },
     });
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 // Get Trader Layanan
 export const getLayananAll = async (req, res) => {
   try {
@@ -278,7 +314,6 @@ export const getLayananAll = async (req, res) => {
     console.log(error.message);
   }
 };
-
 
 // Save Layanan
 export const createLayanan = async (req, res) => {
@@ -309,7 +344,7 @@ export const updateTrader = async (req, res) => {
     await Tb_r_trader.update(req.body, {
       where: {
         KODE_TRADER: req.params.kdtrader,
-      },  
+      },
     });
     res.status(200).json({ msg: "Trader Updated" });
   } catch (error) {
@@ -337,7 +372,7 @@ export const updateLayanan = async (req, res) => {
     await Tb_r_layanan.update(req.body, {
       where: {
         KODE: req.params.kode,
-      },  
+      },
     });
     res.status(200).json({ msg: "Layanan Updated" });
   } catch (error) {
@@ -345,5 +380,18 @@ export const updateLayanan = async (req, res) => {
   }
 };
 
+// get tb_trader_upt
+export const getTraderUPT = async (req, res) => {
+  try {
+    const response = await Tb_trader_upt.findOne({
+      where: {
+        KODE_TRADER: req.params.kdtrader,
+      },
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 export default createRegister;

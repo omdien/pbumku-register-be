@@ -9,7 +9,7 @@ import {
     getKotaByIdProp,
     getUPT,
     getUptAll,
-    getTraderByNPWP,
+    getTrader,
     getTraders,
     getUserName,
     getUser,
@@ -19,7 +19,9 @@ import {
     getLayananByTrader,
     updateTrader,
     updateUser,
-    updateLayanan
+    updateLayanan,
+    createRegisterWithfile,
+    getTraderUPT
 } from "../controllers/RegisterController.js";
 
 const router = express.Router();
@@ -35,7 +37,7 @@ router.get('/register/upt', getUPT);
 router.get('/register/allupt', getUptAll);
 router.get('/register/uptbyid/:id', getUPTById);
 router.get('/register/traders', getTraders);
-router.get('/register/:npwp', getTraderByNPWP);  // warning (pakai sub)
+router.get('/register/trader/:kdtrader', getTrader);  // warning (pakai sub)
 router.get('/register/username/:username', getUserName);
 router.get('/register/user/:kdtrader', getUser);
 router.get('/register/layanan/alllayanan', getLayananAll);
@@ -44,5 +46,7 @@ router.get('/register/getlayanan/:kdtrader', getLayananByTrader);
 router.patch('/register/register/:kdtrader', updateTrader);
 router.patch('/register/user/:userid', updateUser);
 router.patch('/register/crlayanan/:kode', updateLayanan);
+router.post('/register/registerwithfile', createRegisterWithfile);
+router.get('/register/gettraderupt/:kdtrader', getTraderUPT);
 
 export default router;

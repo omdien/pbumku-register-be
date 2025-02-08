@@ -105,3 +105,7 @@ Content-Type: application/json
     "KODE_TRADER": 107,
     "KODE_LAYANAN": "1"
 }
+
+#  get trader upt
+###
+GET http://localhost:5001/register/gettraderupt/48
