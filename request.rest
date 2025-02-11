@@ -109,3 +109,33 @@ Content-Type: application/json
 #  get trader upt
 ###
 GET http://localhost:5001/register/gettraderupt/48
+
+
+# create trader upt
+###
+POST http://localhost:5001/register/crtraderupt
+Content-Type: application/json
+
+{
+    "KODE_TRADER": 18223,
+    "KD_UNIT": "33522",
+    "KODE_TRADER_LOKAL": null,
+    "STATUS": "2",
+    "TGL_AKTIF": "2025-02-09",
+    "USER_UPDATE": 27846,
+    "DATE_CREATED": "2025-02-09"
+}
+
+###
+PATCH http://localhost:5001/register/uptraderupt/18223/33522
+Content-Type: application/json
+
+{
+    "KODE_TRADER": 18223,
+    "KD_UNIT": "33525",
+    "KODE_TRADER_LOKAL": 55555,
+    "STATUS": "2",
+    "TGL_AKTIF": "2025-02-09",
+    "USER_UPDATE": 27846,
+    "DATE_CREATED": "2025-02-09"
+}

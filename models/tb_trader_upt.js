@@ -21,23 +21,23 @@ const Tb_trader_upt = db_hc.define(
     },
     KODE_TRADER_LOKAL: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     STATUS: {
       type: DataTypes.STRING(1),
-      allowNull: false
+      allowNull: true
     },
     TGL_AKTIF: {
       type: DataTypes.STRING(45),
-      allowNull: false
+      allowNull: true
     },
     USER_UPDATE: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     DATE_CREATED: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
   }, 
   {

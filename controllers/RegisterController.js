@@ -6,19 +6,38 @@ import Tb_kota from "../models/tb_kota.js";
 import Tb_r_upt from "../models/tb_r_upt.js";
 import Tb_r_layanan from "../models/tb_r_layanan.js";
 import Tb_trader_upt from "../models/tb_trader_upt.js";
+import Tb_trader_dok from "../models/tb_trader_dok.js";
 import { Op, Sequelize } from "sequelize";
 import fs from "fs";
 // import path from "path";
 // import { Sequelize } from "sequelize";
 
-const randomString = () => {
+export const randomString = async(req, res) => {
   let randomChar =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
-  for (let i = 0; i < 10; i++) {
-    result += randomChar.charAt(Math.floor(Math.random() * randomChar.length));
+  let tersedia = true;
+  while (tersedia) {
+    result = "";
+    for (let i = 0; i < 10; i++) {
+      result += randomChar.charAt(Math.floor(Math.random() * randomChar.length));
+    }
+    try {
+      const response = await Tb_trader_dok.findOne({
+        attributes: ["FILE_ID"],
+        where : {
+          FILE_ID : result
+        }
+      });
+      if (response === null) {
+        tersedia = false;
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+
   }
-  return result;
+  res.status(200).json(result);
 };
 // Get All Trader
 export const getTraders = async (req, res) => {
@@ -179,7 +198,7 @@ export const getKotaByIdProp = async (req, res) => {
   try {
     const response = await Tb_kota.findAll({
       where: {
-        KODE_PROPINSI:  req.params.id.substring(0, 2),
+        KODE_PROPINSI: req.params.id.substring(0, 2),
       },
     });
     res.status(200).json(response);
@@ -272,12 +291,26 @@ export const getUPTById = async (req, res) => {
   }
 };
 
+// Get Trader by Kode Trader
 export const getTrader = async (req, res) => {
-  console.log('masuk');
   try {
     const response = await Tb_r_trader.findOne({
       where: {
         KODE_TRADER: req.params.kdtrader,
+      },
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// Get Trader by NPWP
+export const getTraderByNPWP = async (req, res) => {
+  try {
+    const response = await Tb_r_trader.findOne({
+      where: {
+        NPWP: req.params.npwp,
       },
     });
     res.status(200).json(response);
@@ -389,6 +422,37 @@ export const getTraderUPT = async (req, res) => {
       },
     });
     res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// Update Trader UPT
+export const upTraderUpt = async (req, res) => {
+  try {
+    await Tb_trader_upt.update(req.body, {
+      where: {
+        [Op.and]: [
+          {
+            KODE_TRADER: req.params.kdtrader,
+          },
+          {
+            KD_UNIT: req.params.kdunit,
+          },
+        ],
+      },
+    });
+    res.status(200).json({ msg: "User Updated" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// Save Layanan
+export const createTraderUpt = async (req, res) => {
+  try {
+    await Tb_trader_upt.create(req.body);
+    res.status(201).json({ msg: "Trader UPT Created" });
   } catch (error) {
     console.log(error.message);
   }

@@ -21,7 +21,11 @@ import {
     updateUser,
     updateLayanan,
     createRegisterWithfile,
-    getTraderUPT
+    getTraderUPT,
+    upTraderUpt,
+    createTraderUpt,
+    getTraderByNPWP,
+    randomString
 } from "../controllers/RegisterController.js";
 
 const router = express.Router();
@@ -32,21 +36,25 @@ router.get('/register/users', getUsers);
 router.post('/register/user', createUser);
 router.get('/register/propinsi', getPropinsi);
 router.get('/register/kota', getKota);
-router.get('/register/kota/:id', getKotaByIdProp);
+router.get('/register/kota/:id', getKotaByIdProp); // gwt kota by propinsi
 router.get('/register/upt', getUPT);
 router.get('/register/allupt', getUptAll);
 router.get('/register/uptbyid/:id', getUPTById);
 router.get('/register/traders', getTraders);
-router.get('/register/trader/:kdtrader', getTrader);  // warning (pakai sub)
+router.get('/register/trader/:kdtrader', getTrader);  // get trader by kode trader
 router.get('/register/username/:username', getUserName);
-router.get('/register/user/:kdtrader', getUser);
+router.get('/register/user/:kdtrader', getUser);  // get user by kode trader
 router.get('/register/layanan/alllayanan', getLayananAll);
 router.post('/register/crlayanan', createLayanan);
 router.get('/register/getlayanan/:kdtrader', getLayananByTrader);
-router.patch('/register/register/:kdtrader', updateTrader);
-router.patch('/register/user/:userid', updateUser);
-router.patch('/register/crlayanan/:kode', updateLayanan);
-router.post('/register/registerwithfile', createRegisterWithfile);
-router.get('/register/gettraderupt/:kdtrader', getTraderUPT);
+router.patch('/register/register/:kdtrader', updateTrader); // update trader
+router.patch('/register/user/:userid', updateUser); // update user
+router.patch('/register/crlayanan/:kode', updateLayanan); // update layanan
+router.post('/register/registcleaerwithfile', createRegisterWithfile);
+router.get('/register/gettraderupt/:kdtrader', getTraderUPT); // get trader & upt in tb_trader_upt
+router.patch('/register/uptraderupt/:kdtrader/:kdunit',upTraderUpt); // update trader & upt in tb_trader_upt
+router.post('/register/crtraderupt', createTraderUpt); // create trader upt
+router.get('/register/tradernpwp/:npwp', getTraderByNPWP);  // get trader by npwp
+router.get('/register/filefolder', randomString);  // get trader by npwp
 
 export default router;
