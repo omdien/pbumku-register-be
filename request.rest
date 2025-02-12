@@ -30,9 +30,9 @@ POST http://localhost:5001/register/register
 Content-Type: application/json
 
 {
-    "JENIS_USAHA": "3",
+    "JENIS_USAHA": "4",
     "NOMOR_KUSUKA": "123457",
-    "NAMA": "PT. PERUSAHAAN MAJU MANDIRI",
+    "NAMA": "PT. PERUSAHAAN MAJU MANDIRI SAKTI",
     "NPWP": "123456789012345",
     "NO_IZIN": "3333333",
     "ALAMAT": "JL. KELIMUTU NO 53",
@@ -44,7 +44,7 @@ Content-Type: application/json
     "EMAIL_PNBP": "EMAIL PNBP",
     "KETERANGAN": "KETERANGAN",
     "TGL_DAFTAR": "2022/10/18",
-    "FILE_ID": "ASAL",
+    "FILE_ID": "ZHxOQUHpfE",
     "STATUS": "1",
     "LAST_UPDATED": "2022/10/18"
 }
@@ -139,3 +139,15 @@ Content-Type: application/json
     "USER_UPDATE": 27846,
     "DATE_CREATED": "2025-02-09"
 }
+
+#  get trader by npwp
+###
+GET http://localhost:5001/register/tradernpwp/01.979.694.5-503.000
+
+#  get folder name
+###
+GET http://localhost:5001/register/filefolder
+
+#  create folder name
+###
+POST http://localhost:5001/register/createfolder/9miXxGMMGB

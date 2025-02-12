@@ -20,12 +20,12 @@ import {
     updateTrader,
     updateUser,
     updateLayanan,
-    createRegisterWithfile,
     getTraderUPT,
     upTraderUpt,
     createTraderUpt,
     getTraderByNPWP,
-    randomString
+    randomString,
+    createFolder
 } from "../controllers/RegisterController.js";
 
 const router = express.Router();
@@ -50,11 +50,11 @@ router.get('/register/getlayanan/:kdtrader', getLayananByTrader);
 router.patch('/register/register/:kdtrader', updateTrader); // update trader
 router.patch('/register/user/:userid', updateUser); // update user
 router.patch('/register/crlayanan/:kode', updateLayanan); // update layanan
-router.post('/register/registcleaerwithfile', createRegisterWithfile);
 router.get('/register/gettraderupt/:kdtrader', getTraderUPT); // get trader & upt in tb_trader_upt
 router.patch('/register/uptraderupt/:kdtrader/:kdunit',upTraderUpt); // update trader & upt in tb_trader_upt
 router.post('/register/crtraderupt', createTraderUpt); // create trader upt
 router.get('/register/tradernpwp/:npwp', getTraderByNPWP);  // get trader by npwp
 router.get('/register/filefolder', randomString);  // get trader by npwp
+router.post('/register/createfolder/:nmfolder', createFolder);  // get trader by npwp
 
 export default router;
