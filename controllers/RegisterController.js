@@ -10,8 +10,6 @@ import Tb_trader_dok from "../models/tb_trader_dok.js";
 import { Op, Sequelize } from "sequelize";
 import fs from "fs";
 import path from "path";
-// import path from "path";
-// import { Sequelize } from "sequelize";
 
 export const randomString = async (req, res) => {
   let randomChar =
@@ -45,8 +43,10 @@ export const getTraders = async (req, res) => {
   try {
     const response = await Tb_r_trader.findAll({
       attributes: ["KODE_TRADER", "NAMA", "NPWP", "EMAIL", "TELEPON"],
-      // limit: 100,
-      // include: { model: Tb_user, where: { ROLE: 4 } },
+      include: { 
+        model: Tb_user, 
+        attributes: ["NAMA"],
+        where: { ROLE: 4 } },
     });
     res.status(200).json(response);
   } catch (error) {
@@ -80,19 +80,20 @@ export const createRegister = async (req, res) => {
   const urlNPWP = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameNPWP}`;
   const urlKTP = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameKTP}`;
   const urlNIB = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameNIB}`;
-  const allowedType = ['.png', '.jpg', '.jpeg'];
+  const allowedType = ['.png', '.jpg', '.jpeg', '.pdf'];
   if (!allowedType.includes(extNPWP.toLowerCase())) return res.status(422).json({ msg: "Invalid Images NPWP" });
   if (!allowedType.includes(extKTP.toLowerCase())) return res.status(422).json({ msg: "Invalid Images KTP" });
   if (!allowedType.includes(extNIB.toLowerCase())) return res.status(422).json({ msg: "Invalid Images NIB" });
   if (fileSizeNPWP > 5000000) return res.status(422).json({ msg: "Image NPWP must be less than 5 MB" });
   if (fileSizeKTP > 5000000) return res.status(422).json({ msg: "Image KTP must be less than 5 MB" });
   if (fileSizeNIB > 5000000) return res.status(422).json({ msg: "Image NIB must be less than 5 MB" });
-  
+
   imageNPWP.mv(`${folderName}/${fileNameNPWP}`, async (err) => {
     if (err) return res.status(500).json({ msg: err.message });
     imageKTP.mv(`${folderName}/${fileNameKTP}`);
     imageNIB.mv(`${folderName}/${fileNameNIB}`);
     try {
+      console.log(req.body);
       await Tb_r_trader.create(req.body);
       await Tb_trader_dok.create({
         FILE_ID: req.body.FILE_ID,
@@ -290,6 +291,12 @@ export const getTrader = async (req, res) => {
         KODE_TRADER: req.params.kdtrader,
       },
     });
+    if (response.FILE_ID != "") {
+      const folderName = './public/images/dok/traders/' + response.FILE_ID;
+      if (!fs.existsSync(folderName)) {
+        fs.mkdirSync(folderName);
+      }
+    }
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
@@ -458,6 +465,26 @@ export const createFolder = async (req, res) => {
     res.status(200).json(folderName + req.params.nmfile);
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const getDokumen = async (req, res) => {
+  try {
+    await Tb_trader_dok.findOne({
+      where: {
+        [Op.and]: [
+          {
+            FILE_ID: req.params.fileid,
+          },
+          {
+            DOK_KODE: req.params.kddokumen,
+          },
+        ],
+      },
+    });
+    res.status(201).json({ msg: "Trader UPT Created" });
+  } catch (error) {
+    console.log(error.message);
   }
 };
 

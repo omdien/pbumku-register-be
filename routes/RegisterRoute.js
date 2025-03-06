@@ -25,7 +25,8 @@ import {
     createTraderUpt,
     getTraderByNPWP,
     randomString,
-    createFolder
+    createFolder,
+    getDokumen
 } from "../controllers/RegisterController.js";
 
 const router = express.Router();
@@ -56,5 +57,6 @@ router.post('/register/crtraderupt', createTraderUpt); // create trader upt
 router.get('/register/tradernpwp/:npwp', getTraderByNPWP);  // get trader by npwp
 router.get('/register/filefolder', randomString);  // get trader by npwp
 router.post('/register/createfolder/:nmfolder', createFolder);  // get trader by npwp
+// router.get('/register/dokumen/:fileid/:kddokumen', getDokumen);  // get trader by npwp
 
 export default router;
