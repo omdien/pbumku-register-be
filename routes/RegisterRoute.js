@@ -15,6 +15,7 @@ import {
     getUser,
     getLayananAll,
     createLayanan,
+    createTraderDok,
     getUPTById,
     getLayananByTrader,
     updateTrader,
@@ -47,6 +48,7 @@ router.get('/register/username/:username', getUserName);
 router.get('/register/user/:kdtrader', getUser);  // get user by kode trader
 router.get('/register/layanan/alllayanan', getLayananAll);
 router.post('/register/crlayanan', createLayanan);
+router.post('/register/crtraderdok', createTraderDok);
 router.get('/register/getlayanan/:kdtrader', getLayananByTrader);
 router.patch('/register/register/:kdtrader', updateTrader); // update trader
 router.patch('/register/user/:userid', updateUser); // update user
@@ -57,6 +59,6 @@ router.post('/register/crtraderupt', createTraderUpt); // create trader upt
 router.get('/register/tradernpwp/:npwp', getTraderByNPWP);  // get trader by npwp
 router.get('/register/filefolder', randomString);  // get trader by npwp
 router.post('/register/createfolder/:nmfolder', createFolder);  // get trader by npwp
-// router.get('/register/dokumen/:fileid/:kddokumen', getDokumen);  // get trader by npwp
+router.get('/register/dokumen/:fileid/:kddokumen', getDokumen);  // get trader by npwp
 
 export default router;

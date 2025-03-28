@@ -56,66 +56,84 @@ export const getTraders = async (req, res) => {
 
 // Save Registrasi/Trader
 export const createRegister = async (req, res) => {
-  if (req.files === null) return res.status(400).json({ msg: "No File Uploaded" });
-  const folderName = './public/images/dok/traders/' + req.body.FILE_ID;
   try {
-    if (!fs.existsSync(folderName, { recursive: true })) {
-      fs.mkdirSync(folderName);
-    }
+    await Tb_r_trader.create(req.body);
+    res.status(201).json({ msg: "Trader Created" });
   } catch (error) {
     console.log(error.message);
   }
-  const imageNPWP = req.files.FILE_NPWP;
-  const imageKTP = req.files.FILE_KTP;
-  const imageNIB = req.files.FILE_NIB;
-  const fileSizeNPWP = imageNPWP.data.length;
-  const fileSizeKTP = imageKTP.data.length;
-  const fileSizeNIB = imageNIB.data.length;
-  const extNPWP = path.extname(imageNPWP.name);
-  const extKTP = path.extname(imageKTP.name);
-  const extNIB = path.extname(imageNIB.name);
-  const fileNameNPWP = imageNPWP.md5 + extNPWP;
-  const fileNameKTP = imageKTP.md5 + extKTP;
-  const fileNameNIB = imageNIB.md5 + extNIB;
-  const urlNPWP = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameNPWP}`;
-  const urlKTP = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameKTP}`;
-  const urlNIB = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameNIB}`;
-  const allowedType = ['.png', '.jpg', '.jpeg', '.pdf'];
-  if (!allowedType.includes(extNPWP.toLowerCase())) return res.status(422).json({ msg: "Invalid Images NPWP" });
-  if (!allowedType.includes(extKTP.toLowerCase())) return res.status(422).json({ msg: "Invalid Images KTP" });
-  if (!allowedType.includes(extNIB.toLowerCase())) return res.status(422).json({ msg: "Invalid Images NIB" });
-  if (fileSizeNPWP > 5000000) return res.status(422).json({ msg: "Image NPWP must be less than 5 MB" });
-  if (fileSizeKTP > 5000000) return res.status(422).json({ msg: "Image KTP must be less than 5 MB" });
-  if (fileSizeNIB > 5000000) return res.status(422).json({ msg: "Image NIB must be less than 5 MB" });
-
-  imageNPWP.mv(`${folderName}/${fileNameNPWP}`, async (err) => {
-    if (err) return res.status(500).json({ msg: err.message });
-    imageKTP.mv(`${folderName}/${fileNameKTP}`);
-    imageNIB.mv(`${folderName}/${fileNameNIB}`);
-    try {
-      console.log(req.body);
-      await Tb_r_trader.create(req.body);
-      await Tb_trader_dok.create({
-        FILE_ID: req.body.FILE_ID,
-        DOK_KODE: 1,
-        DOK_PATH: urlNPWP,
-      })
-      await Tb_trader_dok.create({
-        FILE_ID: req.body.FILE_ID,
-        DOK_KODE: 2,
-        DOK_PATH: urlKTP,
-      })
-      await Tb_trader_dok.create({
-        FILE_ID: req.body.FILE_ID,
-        DOK_KODE: 3,
-        DOK_PATH: urlNIB,
-      })
-      res.status(201).json({ msg: "User Created" });
-    } catch (error) {
-      console.log(error.message);
-    }
-  });
 };
+
+// Save Registrasi/Trader
+export const createTraderDok = async (req, res) => {
+  try {
+    await Tb_trader_dok.create(req.body);
+    res.status(201).json({ msg: "Trader DocumentCreated" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// export const createRegister = async (req, res) => {
+//   if (req.files === null) return res.status(400).json({ msg: "No File Uploaded" });
+//   const folderName = './public/images/dok/traders/' + req.body.FILE_ID;
+//   try {
+//     if (!fs.existsSync(folderName, { recursive: true })) {
+//       fs.mkdirSync(folderName);
+//     }
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+//   const imageNPWP = req.files.FILE_NPWP;
+//   const imageKTP = req.files.FILE_KTP;
+//   const imageNIB = req.files.FILE_NIB;
+//   const fileSizeNPWP = imageNPWP.data.length;
+//   const fileSizeKTP = imageKTP.data.length;
+//   const fileSizeNIB = imageNIB.data.length;
+//   const extNPWP = path.extname(imageNPWP.name);
+//   const extKTP = path.extname(imageKTP.name);
+//   const extNIB = path.extname(imageNIB.name);
+//   const fileNameNPWP = imageNPWP.md5 + extNPWP;
+//   const fileNameKTP = imageKTP.md5 + extKTP;
+//   const fileNameNIB = imageNIB.md5 + extNIB;
+//   const urlNPWP = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameNPWP}`;
+//   const urlKTP = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameKTP}`;
+//   const urlNIB = `${req.protocol}://${req.get("host")}/images/dok/traders/${req.body.FILE_ID}/${fileNameNIB}`;
+//   const allowedType = ['.png', '.jpg', '.jpeg', '.pdf'];
+//   if (!allowedType.includes(extNPWP.toLowerCase())) return res.status(422).json({ msg: "Invalid Images NPWP" });
+//   if (!allowedType.includes(extKTP.toLowerCase())) return res.status(422).json({ msg: "Invalid Images KTP" });
+//   if (!allowedType.includes(extNIB.toLowerCase())) return res.status(422).json({ msg: "Invalid Images NIB" });
+//   if (fileSizeNPWP > 5000000) return res.status(422).json({ msg: "Image NPWP must be less than 5 MB" });
+//   if (fileSizeKTP > 5000000) return res.status(422).json({ msg: "Image KTP must be less than 5 MB" });
+//   if (fileSizeNIB > 5000000) return res.status(422).json({ msg: "Image NIB must be less than 5 MB" });
+
+//   imageNPWP.mv(`${folderName}/${fileNameNPWP}`, async (err) => {
+//     if (err) return res.status(500).json({ msg: err.message });
+//     imageKTP.mv(`${folderName}/${fileNameKTP}`);
+//     imageNIB.mv(`${folderName}/${fileNameNIB}`);
+//     try {
+//       await Tb_r_trader.create(req.body);
+//       await Tb_trader_dok.create({
+//         FILE_ID: req.body.FILE_ID,
+//         DOK_KODE: 1,
+//         DOK_PATH: urlNPWP,
+//       })
+//       await Tb_trader_dok.create({
+//         FILE_ID: req.body.FILE_ID,
+//         DOK_KODE: 2,
+//         DOK_PATH: urlKTP,
+//       })
+//       await Tb_trader_dok.create({
+//         FILE_ID: req.body.FILE_ID,
+//         DOK_KODE: 3,
+//         DOK_PATH: urlNIB,
+//       })
+//       res.status(201).json({ msg: "User Created" });
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   });
+// };
 
 // Get Users
 export const getUsers = async (req, res) => {
@@ -291,12 +309,12 @@ export const getTrader = async (req, res) => {
         KODE_TRADER: req.params.kdtrader,
       },
     });
-    if (response.FILE_ID != "") {
-      const folderName = './public/images/dok/traders/' + response.FILE_ID;
-      if (!fs.existsSync(folderName)) {
-        fs.mkdirSync(folderName);
-      }
-    }
+    // if (response.FILE_ID != "") {
+    //   const folderName = './public/images/dok/traders/' + response.FILE_ID;
+    //   if (!fs.existsSync(folderName)) {
+    //     fs.mkdirSync(folderName);
+    //   }
+    // }
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
@@ -470,7 +488,7 @@ export const createFolder = async (req, res) => {
 
 export const getDokumen = async (req, res) => {
   try {
-    await Tb_trader_dok.findOne({
+    const response = await Tb_trader_dok.findOne({
       where: {
         [Op.and]: [
           {
@@ -482,7 +500,7 @@ export const getDokumen = async (req, res) => {
         ],
       },
     });
-    res.status(201).json({ msg: "Trader UPT Created" });
+    res.status(201).json(response);
   } catch (error) {
     console.log(error.message);
   }
