@@ -5,6 +5,8 @@ dotenv.config();
 import FileUpload from "express-fileupload";
 import RegisterRoute from "./routes/RegisterRoute.js";
 import PegawaiRoute from "./routes/PegawaiRoute.js";
+import RegisterPegawai from"./routes/RegisterPegawaiRoute.js"
+import setupUserPegawai from "./models/userPegawai.js";
 
 const app = express();
 
@@ -14,6 +16,8 @@ app.use(FileUpload());
 app.use(express.static("public"));
 app.use(RegisterRoute);
 app.use(PegawaiRoute);
+app.use(RegisterPegawai);
+app.use(setupUserPegawai)
 
 app.listen(process.env.APP_PORT, () => {
     console.log("Server upp and running on port " + process.env.APP_PORT);
