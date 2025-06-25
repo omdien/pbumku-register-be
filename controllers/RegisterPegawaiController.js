@@ -91,24 +91,21 @@ export const updateDataPegawai = async (req, res) => {
     const pegawai = await Tb_pegawai.findOne({ where: { NIP: nip } });
     if (!pegawai) return res.status(404).json({ message: "Pegawai tidak ditemukan" });
 
-    // Update data pegawai
     await pegawai.update({ NAMA, JABATAN, UNIT, KD_UNIT, STATUS, NO_REG });
 
-    // Update data user (khusus ROLE)
     const user = await Tb_user.findOne({ where: { USERNAME: nip } });
 
     if (user) {
       await user.update({ ROLE });
     } else {
-      // Jika user belum ada, bisa disesuaikan: buat baru atau abaikan
-      await Tb_user.create({
+       await Tb_user.create({
         USERNAME: nip,
         NAMA,
         ROLE,
         KD_UNIT,
         NO_ID: nip,
         STATUS: "1",
-        PASSWORD: "", // atau sesuai default
+        PASSWORD: null, 
         EMAIL: "-",
         ALAMAT: "-",
       });
