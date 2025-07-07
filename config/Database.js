@@ -4,7 +4,8 @@ dotenv.config();
 
 const db_hc = new Sequelize('hc', 'root', '', {
     host: process.env.DB_HOST,
-    dialect: 'mysql'
+    dialect: 'mysql',
+    logging: console.log,
 });
 
 export default db_hc;

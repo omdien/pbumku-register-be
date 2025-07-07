@@ -43,7 +43,7 @@ export const getDataPegawaiByNIP = async (req, res) => {
 
 // Add new pegawai
 export const addDataPegawai = async (req, res) => {
-  const { NIP, NAMA, JABATAN, KD_UNIT, STATUS, NO_REG, ROLE, } = req.body;
+  const { NIP, NAMA, JABATAN, KD_UNIT, STATUS, NO_REG, ROLE, EMAIL, } = req.body;
 
   try {
      const upt = await Tb_r_upt.findOne({ where: { KD_UNIT } });
@@ -60,13 +60,13 @@ export const addDataPegawai = async (req, res) => {
     await Tb_user.create({
       USERNAME: NIP,
       NAMA,
-      PASSWORD: "",
+      PASSWORD: null,
       ROLE: ROLE || "2",
       KD_UNIT,
       NO_ID: NIP,
       STATUS: "0",
       ALAMAT: "-",
-      EMAIL: "-"
+      EMAIL,
     });
 
     res.status(201).json({ message: "Pegawai dan user berhasil ditambahkan" });
@@ -91,7 +91,7 @@ export const updateDataPegawai = async (req, res) => {
     const pegawai = await Tb_pegawai.findOne({ where: { NIP: nip } });
     if (!pegawai) return res.status(404).json({ message: "Pegawai tidak ditemukan" });
 
-    await pegawai.update({ NAMA, JABATAN, UNIT, KD_UNIT, STATUS, NO_REG });
+    await pegawai.update({ NAMA, JABATAN, UNIT, KD_UNIT, STATUS, NO_REG, EMAIL });
 
     const user = await Tb_user.findOne({ where: { USERNAME: nip } });
 
@@ -106,7 +106,7 @@ export const updateDataPegawai = async (req, res) => {
         NO_ID: nip,
         STATUS: "1",
         PASSWORD: null, 
-        EMAIL: "-",
+        EMAIL,
         ALAMAT: "-",
       });
     }
