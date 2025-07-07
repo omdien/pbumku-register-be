@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db_hc from "../config/Database.js";
+import Tb_pegawai from "./tb_pegawai.js";
 
 const { DataTypes } = Sequelize;
 
@@ -132,5 +133,11 @@ const Tb_user = db_hc.define(
     ],
   }
 );
+
+Tb_user.belongsTo(Tb_pegawai, {
+  foreignKey: "USERNAME",  // kolom di tb_user
+  targetKey: "NIP",        // kolom di tb_pegawai
+  as: "pegawai"            // alias relasi
+});
 
 export default Tb_user;
