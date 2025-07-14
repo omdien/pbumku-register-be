@@ -7,7 +7,17 @@ import Tb_r_upt from "../models/tb_r_upt.js";
 // Get all pegawai
 export const getAllDataPegawai = async (req, res) => {
   try {
-    const pegawai = await Tb_pegawai.findAll();
+    const nip = req.params.nip;
+    const pegawai = await Tb_pegawai.findAll({
+      include: [
+        {
+          model: Tb_user,
+          as: "userData", 
+          attributes: [ "EMAIL"], 
+          required: false,
+        },
+      ],
+  });
     res.json(pegawai);
   } catch (error) {
     res.status(500).json({ message: "Gagal mengambil data", error: error.message });
@@ -26,7 +36,7 @@ export const getDataPegawaiByNIP = async (req, res) => {
           model: Tb_user,
           as: "userData", 
           where: { USERNAME: nip },
-          attributes: ["ROLE"], 
+          attributes: ["ROLE", "EMAIL"], 
           required: false,
         },
       ],
@@ -61,7 +71,7 @@ export const addDataPegawai = async (req, res) => {
       USERNAME: NIP,
       NAMA,
       PASSWORD: null,
-      ROLE: ROLE || "2",
+      ROLE: ROLE,
       KD_UNIT,
       NO_ID: NIP,
       STATUS: "0",
@@ -85,7 +95,7 @@ export const addDataPegawai = async (req, res) => {
 // Update existing pegawai
 export const updateDataPegawai = async (req, res) => {
   const { nip } = req.params;
-  const { NAMA, JABATAN, UNIT, KD_UNIT, STATUS, NO_REG, ROLE } = req.body;
+  const { NAMA, JABATAN, UNIT, KD_UNIT, STATUS, NO_REG, ROLE, EMAIL } = req.body;
 
   try {
     const pegawai = await Tb_pegawai.findOne({ where: { NIP: nip } });

@@ -12,6 +12,7 @@ Tb_pegawai.hasOne(Tb_user, {
 Tb_user.belongsTo(Tb_pegawai, {
   foreignKey: "USERNAME",
   targetKey: "NIP",
+  as: "userData",
 });
 
 export default function setupUserPegawai() {
